@@ -65,6 +65,10 @@ The `docker-compose.yml` file allows further configuration settings:
 
 New options are added on a regular basis.
 
+#### Automatic admin password generation
+
+Set the `AUTOGEN_ADMIN_PASSWORD` environment variable to `true` to have the container generate a random administrator password whenever `ADMIN_PASSWORD` is empty. The password uses a 24-character alphanumeric value and is printed during startup unless `DISABLE_PRINTING_PLAINTEXT_CREDENTIALS` is enabled, in which case only a generic message is logged.
+
 #### Environment variable behaviour
 
 Set environment variables in .env to configure settings instead of in docker-compose.yml where possible. Setting the variables in .env will allow you to pull updates from Github without issues caused by a modified docker-compose.yml file, should there be an update for it.

@@ -374,11 +374,32 @@ init_user() {
         fi
     fi
 
+    local generated_admin_password="false"
+    if [ -z "$ADMIN_PASSWORD" ] && [ "$AUTOGEN_ADMIN_PASSWORD" == "true" ]; then
+        ADMIN_PASSWORD=$($PYTHON_BIN <<'PY'
+import secrets
+import string
+
+alphabet = string.ascii_letters + string.digits
+print(''.join(secrets.choice(alphabet) for _ in range(24)))
+PY
+)
+        generated_admin_password="true"
+    fi
+
     if [ ! -z "$ADMIN_PASSWORD" ]; then
         if [ "$DISABLE_PRINTING_PLAINTEXT_CREDENTIALS" == "true" ]; then
-            echo "... setting admin password from environment variable"
+            if [ "$generated_admin_password" == "true" ]; then
+                echo "... generated admin password"
+            else
+                echo "... setting admin password from environment variable"
+            fi
         else
-            echo "... setting admin password to '${ADMIN_PASSWORD}'"
+            if [ "$generated_admin_password" == "true" ]; then
+                echo "... generated admin password '${ADMIN_PASSWORD}'"
+            else
+                echo "... setting admin password to '${ADMIN_PASSWORD}'"
+            fi
         fi
         PASSWORD_POLICY=$(sudo -u www-data /var/www/MISP/app/Console/cake Admin getSetting "Security.password_policy_complexity" | jq ".value" -r)
         PASSWORD_LENGTH=$(sudo -u www-data /var/www/MISP/app/Console/cake Admin getSetting "Security.password_policy_length" | jq ".value" -r)

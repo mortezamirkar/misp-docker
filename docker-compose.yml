@@ -135,6 +135,7 @@ services:
       # standard settings
       - "ADMIN_EMAIL=${ADMIN_EMAIL}"
       - "ADMIN_PASSWORD=${ADMIN_PASSWORD}"
+      - "AUTOGEN_ADMIN_PASSWORD=${AUTOGEN_ADMIN_PASSWORD}"
       - "ADMIN_KEY=${ADMIN_KEY}"
       - "ADMIN_ORG=${ADMIN_ORG}"
       - "ADMIN_ORG_UUID=${ADMIN_ORG_UUID}"
